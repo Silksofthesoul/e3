@@ -7,8 +7,8 @@ let isStepGrow = true;
 
 let strW = 1;
 
-const sceneWidth = 400;
-const sceneHeight = 400;
+const sceneWidth = document.body.clientWidth || 400;
+const sceneHeight = document.body.clientHeight || 400;
 
 const fr = 60;
 let x1 = 200;
@@ -28,7 +28,7 @@ let clrO = 1;
 
 
 function setup() {
-  frameRate(fr); 
+  frameRate(fr);
   createCanvas(sceneWidth, sceneHeight);
 }
 const rndCoinBool = _ => (~~Math.floor(random() * 2) === 0);
@@ -40,66 +40,66 @@ const fxNoise = _ => {
 };
 
 const stepRun = ({direction: dir = null, localStep}) => {
-  
+
   let newDir = null;
-  
+
   const minStepY = 0 + localStep;
   const maxStepY = sceneHeight - localStep;
   const minStepX = 0 + localStep;
   const maxStepX = sceneWidth - localStep;
-  
+
   let [_x1, _y1, _x2, _y2] = [x1, y1, x2, y2];
-    
+
   const apply = _ => {
     [x1, y1, x2, y2] = [_x1, _y1, _x2, _y2];
     return null;
   };
-  
+
   const skip = _ => {
     if (checkTop()) return random([1, 3]);
     if (checkBottom()) return random([1, 3]);
     if (checkLeft()) return random([0, 2]);
     if (checkRight()) return random([0, 2]);
   };
-  
+
   const stepTop = _ => {
     _y1 = _y2;
     _x1 = _x2;
     _y2 -= localStep;
   };
-  
+
   const stepRight = _ => {
     _x1 = _x2;
     _y1 = _y2;
     _x2 += localStep;
   };
-  
+
   const stepBottom = _ => {
     _y1 = _y2;
     _x1 = _x2;
     _y2 += localStep;
   };
-  
+
   const stepLeft = _ => {
     _x1 = _x2;
     _y1 = _y2;
     _x2 -= localStep;
   };
-  
+
   const checkTop = _ => _y1 < minStepY || _y2 < minStepY;
   const checkBottom = _ => _y1 > maxStepY|| _y2 > maxStepY;
   const checkLeft = _ => _x1 < minStepX || _x2 < minStepX;
   const checkRight = _ => _x1 > maxStepX || _x2 > maxStepX;
   const check = _ => checkTop() || checkBottom() || checkLeft() || checkRight();
-  
+
   if(dir === 0) stepTop();
   else if(dir === 1) stepRight();
   else if(dir === 2) stepBottom();
   else if(dir === 3) stepLeft();
-    
+
   if(check()) return skip();
   else return apply();
- 
+
 };
 
 const isWrongDirection = (a, b) => {
@@ -119,18 +119,18 @@ const getDirection = _ => {
 const lineProcess = _ => {
   const localStep = step + fxNoise();
   const direction = getDirection();
-  
+
   newDirection = stepRun({
     direction: newDirection !== null ? newDirection : direction,
     localStep
   });
-  
+
   if(isStepGrow) step++;
   else step--;
-  
+
   if(step > stepMax ) isStepGrow = false;
   if(step < stepMin ) isStepGrow = true;
-  
+
   previousDirection = newDirection !== null ? newDirection : direction;
 };
 
@@ -139,14 +139,14 @@ const getProportion = (aMax, bMax, aMin) => bMax * aMin / aMax;
 
 function draw() {
   background('rgba(240,240,240, 0.01)');
-  
+
   clrH = clrH > 360 ? 0 : clrH + 1;
   let clr = color(`hsla(${clrH}, ${getPersent(50, step)}%, ${100 - getPersent(95, step)}%, ${clrO})`);
   stroke(clr);
-  
+
   lineProcess();
-  
+
   strokeWeight(getPersent(15, step));
   line(x1, y1, x2, y2);
-  
+
 }
