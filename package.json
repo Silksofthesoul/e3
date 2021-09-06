@@ -1,0 +1,22 @@
+{
+  "name": "pipline",
+  "version": "1.0.0",
+  "description": "p5.js experiment",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silksofthesoul/e3.git"
+  },
+  "keywords": [
+    "processing",
+    "JavaScript",
+    "design",
+    "p5.js"
+  ],
+  "author": "Labuzov Evgeny <silksofthesoul@yandex.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Silksofthesoul/e3/issues"
+  },
+  "homepage": "https://github.com/Silksofthesoul/e3#readme"
+}
